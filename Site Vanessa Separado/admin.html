@@ -1,8 +1,9 @@
 <!doctype html>
-<html lang="pt-br">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="imagens/Icons/logo-flowers-store.jpg" type="image/png">
     <title>Painel Administrativo - Flower's Store</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,113 +17,130 @@
     />
     <link rel="stylesheet" href="css/global.css" />
     <link rel="stylesheet" href="css/admin.css" />
+
+    <!-- CDN e Cliente do Supabase carregados no cabeçalho -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
   </head>
 
   <body class="admin-body">
     <!-- TELA DE LOGIN (QUANDO NÃO AUTENTICADO) -->
-    <div id="secao-login" class="login-box">
+    <div id="secao-login" class="login-box" role="region" aria-label="Acesso Administrativo">
       <img
         class="logo-circular"
         src="imagens/Icons/logo-flowers-store.jpg"
-        alt="Logo Flower's Store"
+        alt="Logotipo oficial da Flower's Store"
       />
       <h2>Acesso Administrativo</h2>
       <p style="font-size: 0.85rem; color: #666; margin-bottom: 20px;">
         Gerenciamento de Produtos e WhatsApp da Flower's Store
       </p>
 
-      <div id="login-erro" style="display:none; background:#f8d7da; color:#842029; padding:10px; border-radius:6px; margin-bottom:15px; font-size:0.85rem;"></div>
+      <div id="login-erro" role="alert" style="display:none; background:#f8d7da; color:#842029; padding:10px; border-radius:6px; margin-bottom:15px; font-size:0.85rem;"></div>
 
-      <form id="form-login">
+      <form id="form-login" autocomplete="off">
         <div class="form-group">
           <label for="usuario">Usuário</label>
-          <input type="text" id="usuario" class="form-control" required value="admin" autocomplete="username" />
+          <input type="text" id="usuario" class="form-control" required value="" placeholder="Digite seu usuário" autocomplete="off" />
         </div>
         <div class="form-group">
           <label for="senha">Senha</label>
-          <input type="password" id="senha" class="form-control" required placeholder="Digite sua senha" autocomplete="current-password" />
+          <input type="password" id="senha" class="form-control" required value="" placeholder="Digite sua senha" autocomplete="new-password" />
         </div>
-        <button type="submit" style="margin-top: 10px;">
-          <i class="bi bi-box-arrow-in-right"></i> Entrar no Painel
+        <button type="submit" style="margin-top: 10px; cursor: pointer;">
+          <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i> Entrar no Painel
         </button>
       </form>
     </div>
 
     <!-- PAINEL PRINCIPAL (QUANDO AUTENTICADO) -->
     <div id="secao-painel" style="display: none; flex-direction: column; min-height: 100vh;">
-      <header class="admin-header">
+      <header class="admin-header" role="banner">
         <div class="admin-header-title">
           <img
             class="logo-circular"
             src="imagens/Icons/logo-flowers-store.jpg"
-            alt="Logo Flower's Store"
+            alt=""
+            aria-hidden="true"
             style="width: 50px; height: 50px;"
           />
           <div>
             <h1>Flower's Store - Painel do Lojista</h1>
-            <p style="font-size: 0.8rem; color: #f5ebe6; margin: 0;">Atualização de Catálogo e Vendas WhatsApp</p>
+            <p style="font-size: 0.8rem; color: #f5ebe6; margin: 0;">Atualização de Catálogo</p>
           </div>
         </div>
         <div class="admin-header-actions">
-          <a href="index.html" target="_blank" class="btn-secondary">
-            <i class="bi bi-shop"></i> Ver Loja Online
+          <a href="produtos.html" target="_blank" rel="noopener noreferrer" class="btn-secondary" aria-label="Ver Loja Online (abre em nova janela)">
+            <i class="bi bi-shop" aria-hidden="true"></i> Ver Loja Online
           </a>
-          <button id="btn-logout" type="button" class="btn-danger">
-            <i class="bi bi-box-arrow-right"></i> Sair
+          <button id="btn-logout" type="button" class="btn-danger" style="cursor: pointer;" aria-label="Sair do painel administrativo">
+            <i class="bi bi-box-arrow-right" aria-hidden="true"></i> Sair
           </button>
         </div>
       </header>
 
       <main class="admin-container">
         <!-- ALERTAS DE SUCESSO OU ERRO -->
-        <div id="alerta-feedback" style="display: none; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; font-weight: 600;"></div>
+        <div id="alerta-feedback" role="status" aria-live="polite" style="display: none; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; font-weight: 600;"></div>
 
         <!-- FORMULÁRIO PARA ADICIONAR NOVO PRODUTO -->
         <div class="admin-card" style="margin-bottom: 25px;">
           <h2 style="margin-bottom: 15px; border: none; padding: 0;">
-            <i class="bi bi-plus-circle-fill" style="color: #198754;"></i> Adicionar Novo Produto ao Catálogo
+            <i class="bi bi-plus-circle-fill" aria-hidden="true" style="color: #198754;"></i> Adicionar novo produto ao catálogo
           </h2>
+
           <form id="form-novo-produto" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; align-items: flex-end;">
             <div class="form-group" style="margin: 0;">
               <label for="novo-nome">Nome do Produto</label>
               <input type="text" id="novo-nome" class="form-control" required placeholder="Ex: Vestido Midi de Linho" />
             </div>
+
             <div class="form-group" style="margin: 0;">
               <label for="novo-preco">Preço (R$)</label>
               <input type="text" id="novo-preco" class="form-control" required placeholder="Ex: 159.90" />
             </div>
+
             <div class="form-group" style="margin: 0;">
               <label for="novo-categoria">Categoria</label>
               <select id="novo-categoria" class="form-control">
                 <option value="vestidos">Vestidos</option>
-                <option value="bermudas">Bermudas</option>
-                <option value="camisetas_e_blusas">Camisetas e Blusas</option>
+                <option value="conjuntos">Conjuntos</option>
+                <option value="blusas">Blusas</option>
                 <option value="macacoes">Macacões</option>
+                <option value="saias">Saias</option>
+                <option value="calcas">Calças</option>
+                <option value="shorts-alfaiataria">Shorts em Alfaiataria</option>
                 <option value="promocao">Promoção</option>
               </select>
             </div>
+
             <div class="form-group" style="margin: 0;">
-              <label for="novo-url">URL da Imagem</label>
-              <input type="text" id="novo-url" class="form-control" placeholder="imagens/vestido.jpg ou link" />
+              <label for="novo-arquivo-imagem">Foto do Produto</label>
+              <input type="file" id="novo-arquivo-imagem" class="form-control" accept="image/*" required style="padding: 6px;" />
             </div>
+
             <div class="form-group" style="margin: 0;">
               <label for="novo-desconto">Desconto (Ex: -20%)</label>
               <input type="text" id="novo-desconto" class="form-control" placeholder="Opcional" />
             </div>
+
             <div>
               <button type="submit" class="btn-success" style="width: 100%; padding: 10px; background-color: #198754; border: none; color: #fff; border-radius: 6px; font-weight: 600; cursor: pointer;">
-                <i class="bi bi-plus-lg"></i> Cadastrar Peça
+                <i class="bi bi-plus-lg" aria-hidden="true"></i> Cadastrar Peça
               </button>
             </div>
+
           </form>
         </div>
 
         <!-- CONFIGURAÇÃO DE SENHA -->
-        <div class="form-group">
-          <label for="input-senha-nova">Alterar Senha do Admin</label>
-          <div style="display: flex; gap: 10px;">
-            <input type="password" id="input-senha-nova" class="form-control" placeholder="Nova senha (mínimo 4 dígitos)" />
-            <button type="button" id="btn-salvar-senha" class="btn-secondary" style="width: auto; white-space: nowrap;">Atualizar Senha</button>
+        <div class="admin-card" style="margin-bottom: 25px;">
+          <div class="form-group" style="margin: 0;">
+            <label for="input-senha-nova">Alterar Senha do Admin</label>
+            <div style="display: flex; gap: 10px; margin-top: 5px;">
+              <input type="password" id="input-senha-nova" class="form-control" placeholder="Nova senha (mínimo 4 dígitos)" />
+              <button type="button" id="btn-salvar-senha" class="btn-secondary" style="width: auto; white-space: nowrap; cursor: pointer;">Atualizar Senha</button>
+            </div>
           </div>
         </div>
 
@@ -130,19 +148,19 @@
         <div class="admin-card">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
             <h2 style="margin: 0; border: none; padding: 0;">
-              <i class="bi bi-tags"></i> Produtos Atuais no Catálogo (<span id="total-produtos">0</span>)
+              <i class="bi bi-tags" aria-hidden="true"></i> Produtos Atuais no Catálogo (<span id="total-produtos">0</span>)
             </h2>
-            <button type="button" id="btn-recarregar" class="btn-secondary" style="width: auto; font-size: 0.85rem; padding: 6px 14px;">
-              <i class="bi bi-arrow-clockwise"></i> Atualizar Lista
+            <button type="button" id="btn-recarregar" class="btn-secondary" style="width: auto; font-size: 0.85rem; padding: 6px 14px; cursor: pointer;">
+              <i class="bi bi-arrow-clockwise" aria-hidden="true"></i> Atualizar Lista
             </button>
           </div>
 
           <div class="table-responsive">
-            <table class="admin-table">
+            <table class="admin-table" aria-label="Tabela de gerenciamento de produtos">
               <thead>
                 <tr>
                   <th>Imagem</th>
-                  <th>Imagem_url</th>
+                  <th>URL da Imagem</th>
                   <th>Nome do Produto</th>
                   <th>Categoria</th>
                   <th>Preço</th>
@@ -150,7 +168,7 @@
                   <th>Status</th>
                 </tr>
               </thead>
-              <tbody id="tbody-produtos-atuais">
+              <tbody id="tbody-produtos-atuais" aria-live="polite">
                 <tr>
                   <td colspan="7" style="text-align: center; color: #888;">Carregando produtos...</td>
                 </tr>
@@ -160,15 +178,17 @@
         </div>
       </main>
 
-      <footer class="rodape" style="margin-top: auto; padding: 15px 0; font-size: 0.85rem; text-align: center;">
-        <p>&copy; 2026 Flower's Store - Painel Administrativo</p>
+      <footer class="rodape" role="contentinfo" style="margin-top: auto; padding: 15px 0; font-size: 0.85rem; text-align: center;">
+        <p>&copy; 2026 Flower's Store - Painel Administrativo - CNPJ: 43.322.911/0001-48</p>
       </footer>
     </div>
 
     <!-- SCRIPT DE FUNCIONAMENTO DO ADMIN -->
     <script>
       let produtosCarregados = [];
-      let tokenAuth = localStorage.getItem('flowers_admin_token') || '';
+      // Sessão mantida apenas em memória (sem localStorage/sessionStorage)
+      localStorage.removeItem('flowers_admin_token');
+      let tokenAuth = '';
 
       const secaoLogin = document.getElementById('secao-login');
       const secaoPainel = document.getElementById('secao-painel');
@@ -176,12 +196,28 @@
       const loginErro = document.getElementById('login-erro');
       const alertaFeedback = document.getElementById('alerta-feedback');
 
+      function limparCamposLogin() {
+        const campoUsuario = document.getElementById('usuario');
+        const campoSenha = document.getElementById('senha');
+        if (campoUsuario) campoUsuario.value = '';
+        if (campoSenha) campoSenha.value = '';
+      }
+
+      function encerrarSessao() {
+        localStorage.removeItem('flowers_admin_token');
+        tokenAuth = '';
+        produtosCarregados = [];
+        limparCamposLogin();
+        verificarAutenticacao();
+      }
+
       function verificarAutenticacao() {
         if (tokenAuth) {
           secaoLogin.style.display = 'none';
           secaoPainel.style.display = 'flex';
           carregarDadosIniciais();
         } else {
+          limparCamposLogin();
           secaoLogin.style.display = 'block';
           secaoPainel.style.display = 'none';
         }
@@ -193,12 +229,12 @@
         const senha = document.getElementById('senha').value.trim();
         loginErro.style.display = 'none';
 
-        const usuarioEsperado = localStorage.getItem('flowers_admin_user') || 'admin';
+        const usuarioEsperado = 'admin';
         const senhaEsperada = localStorage.getItem('flowers_admin_pass') || 'vanessa123';
 
         if (usuario === usuarioEsperado && senha === senhaEsperada) {
           tokenAuth = 'client_token_' + Date.now();
-          localStorage.setItem('flowers_admin_token', tokenAuth);
+          limparCamposLogin();
           verificarAutenticacao();
           return;
         }
@@ -207,10 +243,14 @@
         loginErro.style.display = 'block';
       });
 
-      document.getElementById('btn-logout').addEventListener('click', () => {
-        localStorage.removeItem('flowers_admin_token');
-        tokenAuth = '';
-        verificarAutenticacao();
+      document.getElementById('btn-logout').addEventListener('click', encerrarSessao);
+
+      // Garante que ao sair, fechar, recarregar ou voltar pelo histórico a senha seja exigida novamente
+      window.addEventListener('pagehide', encerrarSessao);
+      window.addEventListener('pageshow', (e) => {
+        if (e.persisted) {
+          encerrarSessao();
+        }
       });
 
       function mostrarFeedback(msg, tipo = 'success') {
@@ -250,17 +290,6 @@
           }
         }
 
-        const localProds = localStorage.getItem('flowers_produtos');
-        if (localProds) {
-          try {
-            produtosCarregados = JSON.parse(localProds);
-            if (Array.isArray(produtosCarregados) && produtosCarregados.length > 0) {
-              renderizarTabelaProdutos(produtosCarregados);
-              return;
-            }
-          } catch {}
-        }
-
         tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:red;">Erro ao carregar produtos.</td></tr>';
       }
 
@@ -274,34 +303,37 @@
         }
 
         tbody.innerHTML = produtos.map((p, idx) => {
-          const imagemSrc = p.imagem_url || p.imagem || 'imagens/logo-flowers-store.jpg';
+          const imagemSrc = p.imagem_url || 'imagens/logo-flowers-store.jpg';
 
           return `
             <tr>
-              <td><img src="${imagemSrc}" class="img-thumb" alt="${p.nome}" width="40" height="40" style="object-fit:cover; border-radius:4px;"></td>
-              <td><input type="text" id="url-${idx}" value="${p.imagem_url || ''}" class="form-control" style="font-size:0.8rem; padding:4px;" placeholder="URL da imagem"></td>
-              <td><input type="text" id="nome-${idx}" value="${p.nome || ''}" class="form-control" style="font-size:0.8rem; padding:4px;"></td>
+              <td><img src="${imagemSrc}" class="img-thumb" alt="Miniatura da peça ${p.nome}" width="40" height="40" style="object-fit:cover; border-radius:4px;"></td>
+              <td><input type="text" id="url-${idx}" value="${p.imagem_url || ''}" class="form-control" style="font-size:0.8rem; padding:4px;" placeholder="URL da imagem" aria-label="URL da imagem de ${p.nome}"></td>
+              <td><input type="text" id="nome-${idx}" value="${p.nome || ''}" class="form-control" style="font-size:0.8rem; padding:4px;" aria-label="Nome do produto ${p.nome}"></td>
               <td>
-                <select id="cat-${idx}" class="form-control" style="font-size:0.8rem; padding:4px;">
+                <select id="cat-${idx}" class="form-control" style="font-size:0.8rem; padding:4px;" aria-label="Categoria de ${p.nome}">
                   <option value="vestidos" ${p.categoria === 'vestidos' ? 'selected' : ''}>Vestidos</option>
-                  <option value="bermudas" ${p.categoria === 'bermudas' ? 'selected' : ''}>Bermudas</option>
-                  <option value="camisetas_e_blusas" ${p.categoria === 'camisetas_e_blusas' ? 'selected' : ''}>Camisetas e Blusas</option>
+                  <option value="conjuntos" ${p.categoria === 'conjuntos' ? 'selected' : ''}>Conjuntos</option>
+                  <option value="blusas" ${p.categoria === 'blusas' ? 'selected' : ''}>Blusas</option>
                   <option value="macacoes" ${p.categoria === 'macacoes' ? 'selected' : ''}>Macacões</option>
+                  <option value="saias" ${p.categoria === 'saias' ? 'selected' : ''}>Saias</option>
+                  <option value="calcas" ${p.categoria === 'calcas' ? 'selected' : ''}>Calças</option>
+                  <option value="shorts-alfaiataria" ${p.categoria === 'shorts-alfaiataria' || p.categoria === 'shorts' ? 'selected' : ''}>Shorts em Alfaiataria</option>
                   <option value="promocao" ${p.categoria === 'promocao' ? 'selected' : ''}>Promoção</option>
                 </select>
               </td>
-              <td><input type="text" id="preco-${idx}" value="${p.preco || 0}" class="form-control" style="font-size:0.8rem; padding:4px; width:80px;"></td>
-              <td><input type="text" id="desconto-${idx}" value="${p.tag_desconto || ''}" class="form-control" style="font-size:0.8rem; padding:4px; width:70px;" placeholder="-20%"></td>
+              <td><input type="text" id="preco-${idx}" value="${p.preco || 0}" class="form-control" style="font-size:0.8rem; padding:4px; width:80px;" aria-label="Preço de ${p.nome}"></td>
+              <td><input type="text" id="desconto-${idx}" value="${p.tag_desconto || ''}" class="form-control" style="font-size:0.8rem; padding:4px; width:70px;" placeholder="-20%" aria-label="Desconto de ${p.nome}"></td>
               <td>
                 <div style="display:flex; gap:6px; align-items:center;">
-                  <button type="button" class="btn-success" onclick="salvarProdutoUnico(${idx})" title="Salvar Alterações" style="padding: 4px 10px; font-size: 0.8rem; background-color: #198754; border:none; color: #fff; border-radius:4px;">
-                    <i class="bi bi-check-lg"></i> Salvar
+                  <button type="button" class="btn-success" onclick="salvarProdutoUnico(${idx})" title="Salvar Alterações" aria-label="Salvar alterações de ${p.nome}" style="padding: 4px 10px; font-size: 0.8rem; background-color: #198754; border:none; color: #fff; border-radius:4px; cursor:pointer;">
+                    <i class="bi bi-check-lg" aria-hidden="true"></i> Salvar
                   </button>
-                  <button type="button" class="action-btn btn-secondary" onclick="alternarStatus(${idx})" title="Ativar/Desativar" style="padding: 4px 8px;">
-                    <i class="bi bi-power"></i>
+                  <button type="button" class="action-btn ${p.ativo === false ? 'btn-inativo' : 'btn-secondary'}" onclick="alternarStatus(${idx})" title="${p.ativo === false ? 'Ativar produto' : 'Desativar produto'}" aria-label="${p.ativo === false ? 'Ativar' : 'Desativar'} ${p.nome}" style="padding: 4px 8px; cursor:pointer;">
+                  <i class="bi bi-power" aria-hidden="true"></i>
                   </button>
-                  <button type="button" class="action-btn btn-danger" onclick="excluirProduto(${idx})" title="Excluir" style="padding: 4px 8px;">
-                    <i class="bi bi-trash"></i>
+                  <button type="button" class="action-btn btn-danger" onclick="excluirProduto(${idx})" title="Excluir" aria-label="Excluir ${p.nome}" style="padding: 4px 8px; cursor:pointer;">
+                    <i class="bi bi-trash" aria-hidden="true"></i>
                   </button>
                 </div>
               </td>
@@ -317,8 +349,39 @@
         const precoStr = document.getElementById('novo-preco').value.replace(',', '.');
         const preco = parseFloat(precoStr) || 0;
         const categoria = document.getElementById('novo-categoria').value;
-        const imagem_url = document.getElementById('novo-url').value.trim() || 'imagens/logo-flowers-store.jpg';
         const tag_desconto = document.getElementById('novo-desconto').value.trim();
+        const inputFile = document.getElementById('novo-arquivo-imagem');
+
+        let imagem_url = 'imagens/logo-flowers-store.jpg';
+
+        if (inputFile.files && inputFile.files[0]) {
+          const arquivo = inputFile.files[0];
+          const nomeArquivoLimpo = Date.now() + '-' + arquivo.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+
+          if (window.supabase) {
+            try {
+              const { error: uploadError } = await window.supabase.storage
+                .from('produtos')
+                .upload(nomeArquivoLimpo, arquivo);
+
+              if (uploadError) {
+                console.error('Erro no upload:', uploadError);
+                alert('Erro ao carregar a imagem para o armazenamento.');
+                return;
+              }
+
+              const { data: publicUrlData } = window.supabase.storage
+                .from('produtos')
+                .getPublicUrl(nomeArquivoLimpo);
+
+              if (publicUrlData) {
+                imagem_url = publicUrlData.publicUrl;
+              }
+            } catch (err) {
+              console.error('Erro de conexão no upload:', err);
+            }
+          }
+        }
 
         const novoProduto = {
           nome,
@@ -343,7 +406,7 @@
         }
 
         document.getElementById('form-novo-produto').reset();
-        mostrarFeedback(`🎉 Sucesso! Produto "${nome}" adicionado ao catálogo.`);
+        mostrarFeedback(`🎉 Sucesso! Produto "${nome}" adicionado com foto ao catálogo.`);
         carregarProdutos();
       });
 
@@ -381,14 +444,12 @@
           }
         }
 
-        localStorage.setItem('flowers_produtos', JSON.stringify(produtosCarregados));
         mostrarFeedback(`🎉 Sucesso! Produto "${produto.nome}" atualizado.`);
         carregarProdutos();
       };
 
       window.alternarStatus = async function(idx) {
         produtosCarregados[idx].ativo = !produtosCarregados[idx].ativo;
-        localStorage.setItem('flowers_produtos', JSON.stringify(produtosCarregados));
         if (window.supabase && produtosCarregados[idx].id) {
           await window.supabase.from('produtos').update({ ativo: produtosCarregados[idx].ativo }).eq('id', produtosCarregados[idx].id);
         }
@@ -400,7 +461,6 @@
         if (confirm(`Deseja realmente remover o produto "${produtosCarregados[idx].nome}"?`)) {
           const prodId = produtosCarregados[idx].id;
           produtosCarregados.splice(idx, 1);
-          localStorage.setItem('flowers_produtos', JSON.stringify(produtosCarregados));
           if (window.supabase && prodId) {
             await window.supabase.from('produtos').delete().eq('id', prodId);
           }
@@ -413,24 +473,14 @@
         const novaSenha = document.getElementById('input-senha-nova').value.trim();
         if (novaSenha.length < 4) return alert('A nova senha deve ter no mínimo 4 caracteres.');
         localStorage.setItem('flowers_admin_pass', novaSenha);
-        mostrarFeedback('Senha alterada com sucesso! Faça login novamente.');
+        mostrarFeedback('Senha alterada com sucesso! Faça login novamente com a nova senha.');
         document.getElementById('input-senha-nova').value = '';
-        setTimeout(() => {
-          localStorage.removeItem('flowers_admin_token');
-          tokenAuth = '';
-          verificarAutenticacao();
-        }, 1500);
+        setTimeout(encerrarSessao, 1500);
       });
 
       document.getElementById('btn-recarregar').addEventListener('click', carregarProdutos);
 
       verificarAutenticacao();
     </script>
-
-    <!-- 1. CDN Oficial do Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
-    <!-- 2. Arquivo de conexão do Supabase -->
-    <script src="supabase.js"></script>
   </body>
 </html>

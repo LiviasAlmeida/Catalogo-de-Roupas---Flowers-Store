@@ -34,7 +34,8 @@
 
 
 /* ========================================
-   TÍTULO DO CATÁLOGO
+   TÍTULO DO CATÁLOGO E SUBTÍTULO
+   (Perfeitamente alinhados entre si e com a grade)
 ======================================== */
 
 .vinicius-titulo-catalogo {
@@ -44,20 +45,29 @@
   text-decoration: none;
   border: none;
   margin-top: 20px;
-  margin-left: 70px;
+  margin-bottom: 5px;
+  width: 100%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 30px;
+  box-sizing: border-box;
+  text-align: left;
 }
-
-
-/* ========================================
-   SUBTÍTULO
-======================================== */
 
 .vinicius-subtitulo {
   font-family: 'Montserrat', sans-serif;
   font-size: 14px;
-  font-weight: 400;
-  color: #5c5260;
-  margin-left: 140px;
+  font-weight: 500;
+  color: #483d4c;
+  margin-bottom: 10px;
+  width: 100%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 30px;
+  box-sizing: border-box;
+  text-align: left;
 }
 
 
@@ -79,29 +89,41 @@
 ======================================== */
 
 #vinicius-produtos .vinicius-filtros {
+  position: sticky;
+  top: var(--altura-nav-principal, 49px);
+  z-index: 950;
   display: flex;
   justify-content: center;
   align-items: stretch;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 12px;
   margin: 12px 0 25px;
+  padding: 10px 8px;
+  background-color: var(--sixth-color);
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+#vinicius-produtos .vinicius-filtros.fixo {
+  border-bottom: 1px solid var(--fourth-color);
+  box-shadow: 0 4px 12px rgba(104, 13, 26, 0.14);
 }
 
 #vinicius-produtos .vinicius-filtro-btn {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 48px;
-  padding: 12px 24px;
+  min-height: 44px;
+  padding: 10px 20px;
   background-color: var(--primary-color);
-  color: white;
+  color: #ffffff;
   text-decoration: none;
   text-align: center;
   border-radius: 4px;
-  border-bottom: 6px solid var(--third-color);
+  border-bottom: 5px solid var(--third-color);
   font-family: var(--font-body);
   font-weight: bold;
-  transition: background-color 0.3s ease;
+  font-size: 0.92rem;
+  transition: background-color 0.25s ease, transform 0.2s ease, border-color 0.25s ease;
   box-sizing: border-box;
 }
 
@@ -109,6 +131,13 @@
 #vinicius-produtos .vinicius-filtro-btn:focus-visible {
   background-color: var(--secondary-color);
   outline: 2px solid var(--third-color);
+  outline-offset: 2px;
+}
+
+#vinicius-produtos .vinicius-filtro-btn.ativo {
+  background-color: var(--secondary-color);
+  border-bottom-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(104, 13, 26, 0.25);
 }
 
 
@@ -123,7 +152,7 @@
   padding-bottom: 5px;
   color: var(--primary-color);
   border-bottom: 2px solid var(--fourth-color);
-  scroll-margin-top: 100px;
+  scroll-margin-top: var(--offset-categorias, 140px);
 }
 
 
@@ -171,176 +200,11 @@
 }
 
 
-/* ========================================
-   MENU DE ÍCONES HORIZONTAL
-   FIXO NA PARTE INFERIOR
-======================================== */
 
-.navegacao-secundaria {
-  display: none;
-  position: fixed;
-
-  bottom: 20px;
-  left: 50%;
-  top: auto;
-  transform: translateX(-50%);
-
-  z-index: 9999;
-
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-
-  padding: 8px 12px;
-
-  background-color: var(--sixth-color);
-  border: 2px solid var(--fifth-color);
-  border-radius: 35px;
-
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
-
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-
-  box-sizing: border-box;
-}
-
-
-/* Links dos ícones */
-
-.menu-link-navegacao-secundaria {
-  width: 44px;
-  height: 44px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  flex-shrink: 0;
-
-  color: var(--primary-color);
-  font-size: 22px;
-
-  border-radius: 50%;
-  text-decoration: none;
-
-  transition: color 0.3s ease,
-              background-color 0.3s ease,
-              transform 0.3s ease,
-              box-shadow 0.3s ease;
-}
-
-
-/* Ícones Ionicons */
-
-.menu-link-navegacao-secundaria ion-icon {
-  font-size: 22px;
-}
-
-
-/* Efeito ao passar o mouse */
-
-.menu-link-navegacao-secundaria:hover {
-  color: white;
-  background-color: var(--third-color);
-
-  transform: translateY(-2px);
-
-  box-shadow: 0 0 12px rgba(177, 29, 16, 0.25);
-}
-
-
-/* Acessibilidade por teclado */
-
-.menu-link-navegacao-secundaria:focus-visible {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 3px;
-}
 
 
 /* ========================================
-   BOTÃO VOLTAR AO TOPO
-======================================== */
-
-.vinicius-voltar-topo {
-  position: fixed;
-
-  bottom: 20px;
-  right: 20px;
-
-  background-color: var(--primary-color);
-  color: var(--fifth-color);
-
-  width: 45px;
-  height: 45px;
-
-  border-radius: 50%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  text-decoration: none;
-  font-size: 1.4rem;
-
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-
-  z-index: 9999;
-
-  transition: transform 0.2s ease,
-              background-color 0.2s ease;
-}
-
-.vinicius-voltar-topo:hover {
-  transform: translateY(-3px);
-  background-color: var(--third-color);
-  color: #ffffff;
-}
-
-
-/* ========================================
-   BOTÃO FLUTUANTE DO WHATSAPP
-======================================== */
-
-.whatsapp-flutuante {
-  position: fixed;
-
-  bottom: 20px;
-  right: 75px;
-
-  background-color: #25d366;
-  color: #ffffff;
-
-  width: 45px;
-  height: 45px;
-
-  border-radius: 50%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  text-decoration: none;
-  font-size: 1.4rem;
-
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-
-  z-index: 9999;
-
-  transition: transform 0.2s ease,
-              background-color 0.2s ease;
-}
-
-.whatsapp-flutuante:hover {
-  transform: translateY(-3px);
-  background-color: #20ba5a;
-  color: #ffffff;
-}
-
-
-/* ========================================
-   RESPONSIVIDADE PARA TABLETS
+   RESPONSIVIDADE PARA TABLETS E CELULARES
 ======================================== */
 
 @media (max-width: 992px) {
@@ -355,6 +219,44 @@
 
 }
 
+@media (max-width: 768px) {
+
+  /* Opção 2: No celular, o menu principal rola com a página
+     para que apenas a barra de categorias fique fixa no top: 0 */
+  .navegacao-principal {
+    position: static;
+  }
+
+  #vinicius-produtos .vinicius-filtros {
+    top: 0;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 8px;
+    margin: 10px -20px 20px;
+    padding: 10px 20px;
+  }
+
+  #vinicius-produtos .vinicius-filtros::-webkit-scrollbar {
+    display: none;
+  }
+
+  #vinicius-produtos .vinicius-filtro-btn {
+    padding: 8px 14px;
+    min-height: 40px;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  #vinicius-produtos .vinicius-titulo-categoria {
+    scroll-margin-top: var(--offset-categorias, 72px);
+  }
+
+}
+
 
 /* ========================================
    RESPONSIVIDADE PARA CELULARES
@@ -362,17 +264,11 @@
 
 @media (max-width: 600px) {
 
-  /* Título */
+  /* Título e Subtítulo */
 
-  .vinicius-titulo-catalogo {
-    margin-left: 20px;
-  }
-
-  /* Subtítulo */
-
+  .vinicius-titulo-catalogo,
   .vinicius-subtitulo {
-    margin-left: 20px;
-    margin-right: 20px;
+    padding: 0 15px;
   }
 
   /* Catálogo */
@@ -381,15 +277,9 @@
     padding: 15px;
   }
 
-  /* Filtros */
-
   #vinicius-produtos .vinicius-filtros {
-    gap: 10px;
-  }
-
-  #vinicius-produtos .vinicius-filtro-btn {
-    padding: 10px 14px;
-    min-height: 44px;
+    margin: 10px -15px 18px;
+    padding: 8px 15px;
   }
 
   /* Produtos */
@@ -407,50 +297,77 @@
 
   #vinicius-produtos .vinicius-titulo-categoria {
     font-size: 1.4rem;
-    scroll-margin-top: 80px;
+    scroll-margin-top: var(--offset-categorias, 70px);
   }
 
-  /* Menu de ícones horizontal */
-
-  .navegacao-secundaria {
-    bottom: 15px;
-    left: 50%;
-    top: auto;
-    transform: translateX(-50%);
-
-    flex-direction: row;
-    gap: 5px;
-
-    padding: 6px 9px;
-
-    max-width: calc(100vw - 24px);
-  }
-
-  .menu-link-navegacao-secundaria {
-    width: 40px;
-    height: 40px;
-  }
-
-  .menu-link-navegacao-secundaria ion-icon {
-    font-size: 20px;
-  }
-
-  /* Botões flutuantes */
-
-  .vinicius-voltar-topo,
-  .whatsapp-flutuante {
-    width: 40px;
-    height: 40px;
-    bottom: 15px;
+  .btn-voltar-topo {
+    bottom: 20px;
+    right: 16px;
+    width: 44px;
+    height: 44px;
     font-size: 1.2rem;
   }
 
-  .vinicius-voltar-topo {
-    right: 12px;
-  }
+}
 
-  .whatsapp-flutuante {
-    right: 60px;
-  }
+/* ========================================
+   MENSAGEM DE CATEGORIA VAZIA
+======================================== */
 
+.categoria-vazia {
+  text-align: center;
+  padding: 24px 16px;
+  margin: 10px 0 20px;
+  color: #483d4c;
+  background-color: var(--fifth-color);
+  border: 1px dashed var(--fourth-color);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* ========================================
+   BOTÃO FLUTUANTE VOLTAR AO TOPO
+======================================== */
+
+.btn-voltar-topo {
+  position: fixed;
+  bottom: 22px;
+  right: 24px;
+  z-index: 9998;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: var(--fifth-color);
+  border: 2px solid var(--third-color);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease, background-color 0.25s ease;
+}
+
+.btn-voltar-topo.visivel {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.btn-voltar-topo:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-2px);
+}
+
+.btn-voltar-topo:focus-visible {
+  outline: 3px solid var(--third-color);
+  outline-offset: 3px;
 }

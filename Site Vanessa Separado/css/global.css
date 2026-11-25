@@ -24,6 +24,54 @@ html {
     --font-title: 'Cinzel', serif;
     --font-body: 'Montserrat', sans-serif;
 }
+
+/* Classes utilitárias de Acessibilidade (WCAG 2.1 / 2.2) */
+.sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+/* Link para pular ao conteúdo (fica visível somente no foco via Tab) */
+.sr-only-focusable {
+    position: absolute;
+    top: -9999px;
+    left: 10px;
+    z-index: 10001;
+    background: var(--primary-color);
+    color: #ffffff !important;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    border: 2px solid var(--third-color);
+    transition: top 0.2s ease;
+}
+
+.sr-only-focusable:focus,
+.sr-only-focusable:focus-visible {
+    top: 10px;
+    outline: 3px solid #ffffff;
+    outline-offset: 2px;
+}
+
+/* Respeito a usuários com sensibilidade vestibular / redução de movimento */
+@media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
  
 body {
     background: var(--sixth-color);
@@ -143,11 +191,16 @@ header {
 }
 
 .navegacao-principal a:hover,
-.navegacao-principal a:focus-visible,
 .navegacao-principal a.active {
     background: var(--fourth-color);
     color: var(--primary-color);
-    outline: none;
+}
+
+.navegacao-principal a:focus-visible {
+    background: var(--fourth-color);
+    color: var(--primary-color);
+    outline: 2px solid var(--third-color);
+    outline-offset: 2px;
 }
 
 /* ======== COMPONENTE DE CARD DE PRODUTOS =========== */
@@ -170,7 +223,7 @@ header {
     align-items: center;
     justify-content: space-between;
     text-align: center;
-    position: relative;
+    position: relative !important; /* Essencial para fixar a tag dentro do card */
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -197,6 +250,35 @@ header {
     margin-bottom: 15px;
 }
 
+.preco-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    margin-bottom: 15px;
+}
+
+.preco-original {
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: #6b5357;
+    margin: 0;
+}
+
+.preco-original del {
+    text-decoration: line-through;
+    text-decoration-thickness: 1.5px;
+}
+
+.preco-box .preco {
+    margin-bottom: 0;
+}
+
+.preco-promocional {
+    color: var(--secondary-color);
+    font-size: 1.25rem;
+}
+
 .fotos {
     width: 100%;
     height: 300px;
@@ -205,15 +287,16 @@ header {
 }
 
 .tag-desconto {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+    position: absolute !important;
+    top: 10px !important;
+    right: 10px !important;
     background: var(--secondary-color);
     color: #ffffff;
     padding: 5px 10px;
     border-radius: 4px;
     font-size: 0.85rem;
     font-weight: bold;
+    z-index: 2 !important;
 }
 
 button {
@@ -253,15 +336,11 @@ button:active {
 .titulo-loja-baixo {
   font-family: var(--font-title);
   font-size: 2.5rem;
-  color: var(--fifth-color);
+  color: var(--primary-color);
   letter-spacing: 2px;
   text-transform: uppercase;
   text-align: center;
 }
-
-.titulo-loja-baixo {
-    font-size: 1.7rem;
-  }
 
 /* RESPONSIVIDADE GLOBAL DO CABEÇALHO E MENU */
 @media (max-width: 768px) {

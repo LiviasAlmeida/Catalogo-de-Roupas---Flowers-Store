@@ -3,22 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Promoções da semana Flower's Uberaba">
+    <link rel="shortcut icon" href="imagens/Icons/logo-flowers-store.jpg" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@600&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-    />
-    <link rel="stylesheet" href="css/global.css" />
-    <link rel="stylesheet" href="css/promocao.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@600&display=swap"
+      rel="stylesheet"/>
+    <link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"/>
+    <link rel="shortcut icon" href="imagens/Icons/logo-flowers-store.jpg" type="image/jpg">
+    <link rel="stylesheet" href="css/global.css"/>
+    <link rel="stylesheet" href="css/promocao.css"/>
     <title>Flower's Store - Promoções</title>
   </head>
 
   <body>
+    <!-- Atalho de acessibilidade para navegação via teclado (WCAG 2.4.1) -->
+    <a href="#main-promocoes" class="sr-only-focusable">Pular para as promoções da semana</a>
+
     <!-- CABEÇALHO -->
     <div class="top-announcement-bar">
       <p>
@@ -27,47 +29,51 @@
       </p>
     </div>
     
-    <header>
+    <header role="banner">
       <div class="logo-container">
         <img
           class="logo logo-circular"
           src="imagens/Icons/logo-flowers-store.jpg"
-          alt="Logo Flower's Store Esquerda"
+          alt=""
+          aria-hidden="true"
         />
-        <h1 class="titulo-loja">Flower's Store</h1>
+        <span class="titulo-loja" role="heading" aria-level="1">Flower's Store</span>
         <img
           class="logo logo-circular"
           src="imagens/Icons/logo-flowers-store.jpg"
-          alt="Logo Flower's Store Direita"
+          alt=""
+          aria-hidden="true"
         />
       </div>
     </header>
 
     <!-- NAVEGAÇÃO GLOBAL -->
-    <nav class="navegacao-principal">
-        <a href="promocao.html" class="active">Promoções da Semana</a>
+    <nav class="navegacao-principal" aria-label="Navegação principal da loja">
+        <a href="promocao.html" class="active" aria-current="page">Promoções da Semana</a>
         <a href="produtos.html">Produtos</a>
         <a href="sobre.html">Sobre</a>
         <a href="contato.html">Contato</a>
     </nav>
 
     <!-- CONTEÚDO DINÂMICO DE PROMOÇÕES -->
-    <main class="pagina-home">
+    <main class="pagina-home" id="main-promocoes" tabindex="-1">
         <h2>Promoções da Semana</h2>
         
-        <section class="grade-produtos-geral" id="container-grade-promocoes">
+        <section class="grade-produtos-geral" id="container-grade-promocoes" aria-live="polite" aria-label="Lista de produtos em promoção">
             <p style="text-align:center; padding: 40px; color: #555; grid-column: 1 / -1;">Carregando promoções...</p>
         </section>
     </main>
 
     <!-- RODAPÉ GLOBAL -->
-    <footer class="rodape">
-      <img class="logo-circular" src="imagens/Icons/logo-flowers-store.jpg" alt="Logo Flower's Store"/>
-      <h1 class="titulo-loja-baixo">Flower's Store</h1>
+    <footer class="rodape" role="contentinfo">
+      <img class="logo-circular" src="imagens/Icons/logo-flowers-store.jpg" alt="" aria-hidden="true"/>
+      <p class="titulo-loja-baixo" aria-hidden="true">Flower's Store</p>
       <br>
       <p>Elegância, bom gosto e peças exclusivas feitas para realçar a<br>beleza e a autoestima feminina.</p>
       <br>
-      <p>&copy;2026 Flower's Store. Todos os direitos reservados. · Rua Getúlio Guarita, 543 - Abadia, Uberaba - MG</p>
+      <p>CNPJ: 43.322.911/0001-48</p>
+      <p>Rua Getúlio Guaritá, 543 - Abadia, Uberaba - MG</p>
+      <p>&copy;2026 Flower's Store. Todos os direitos reservados.</p>
     </footer>
 
     <!-- Supabase e Script de Renderização Dinâmica -->
@@ -78,7 +84,7 @@
         const container = document.getElementById('container-grade-promocoes');
 
         if (!window.supabase) {
-          container.innerHTML = '<p style="text-align:center; color:red;">Erro ao carregar banco de dados.</p>';
+          container.innerHTML = '<p style="text-align:center; color:red;" role="alert">Erro ao carregar banco de dados.</p>';
           return;
         }
 
@@ -91,7 +97,7 @@
 
           if (error) {
             console.error('Erro ao buscar promoções:', error);
-            container.innerHTML = '<p style="text-align:center; color:red;">Erro ao carregar promoções.</p>';
+            container.innerHTML = '<p style="text-align:center; color:red;" role="alert">Erro ao carregar promoções.</p>';
             return;
           }
 
@@ -102,26 +108,76 @@
             return;
           }
 
+          function calcularPrecosProduto(preco, tagDesconto) {
+            const precoOriginal = Number(preco);
+            const formatarMoeda = (valor) =>
+              valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+            if (!Number.isFinite(precoOriginal) || precoOriginal <= 0) {
+              return {
+                temDesconto: false,
+                precoOriginalFmt: formatarMoeda(0),
+                precoFinalFmt: formatarMoeda(0)
+              };
+            }
+
+            let percentual = 0;
+            if (typeof tagDesconto === 'string') {
+              const match = tagDesconto.match(/(\d+(?:[.,]\d+)?)\s*%/);
+              if (match) {
+                percentual = parseFloat(match[1].replace(',', '.'));
+              }
+            }
+
+            if (Number.isFinite(percentual) && percentual > 0 && percentual < 100) {
+              const precoFinal = Math.round(precoOriginal * (1 - percentual / 100) * 100) / 100;
+              return {
+                temDesconto: true,
+                precoOriginalFmt: formatarMoeda(precoOriginal),
+                precoFinalFmt: formatarMoeda(precoFinal)
+              };
+            }
+
+            const precoFmt = formatarMoeda(precoOriginal);
+            return {
+              temDesconto: false,
+              precoOriginalFmt: precoFmt,
+              precoFinalFmt: precoFmt
+            };
+          }
+
           container.innerHTML = promocoesAtivas.map(p => {
-            const precoFmt = Number(p.preco).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            const precos = calcularPrecosProduto(p.preco, p.tag_desconto);
             const imagemSrc = p.imagem_url || 'imagens/logo-flowers-store.jpg';
-            const msgWhats = encodeURIComponent(`Olá! Tenho interesse na promoção ${p.nome} de ${precoFmt}.`);
+            const textoWhats = precos.temDesconto
+              ? `Olá! Tenho interesse na promoção ${p.nome} por ${precos.precoFinalFmt} (de ${precos.precoOriginalFmt}).`
+              : `Olá! Tenho interesse na promoção ${p.nome} de ${precos.precoFinalFmt}.`;
+            const msgWhats = encodeURIComponent(textoWhats);
+            const ariaComprar = precos.temDesconto
+              ? `Comprar ${p.nome} por ${precos.precoFinalFmt} (antes ${precos.precoOriginalFmt}) via WhatsApp (abre em nova janela)`
+              : `Comprar ${p.nome} por ${precos.precoFinalFmt} via WhatsApp (abre em nova janela)`;
+            const precoHtml = precos.temDesconto
+              ? `<div class="preco-box">
+                   <p class="preco-original"><span class="sr-only">De </span><del>${precos.precoOriginalFmt}</del></p>
+                   <p class="preco preco-promocional"><span class="sr-only">Por </span>${precos.precoFinalFmt}</p>
+                 </div>`
+              : `<p class="preco">${precos.precoFinalFmt}</p>`;
             const tagDesc = p.tag_desconto ? `<span class="tag-desconto">${p.tag_desconto}</span>` : '<span class="tag-desconto">Promo</span>';
 
             return `
-              <article class="produto produto-promocao">
+              <article class="produto produto-promocao" aria-label="${p.nome}">
                   ${tagDesc}
-                  <img src="${imagemSrc}" alt="${p.nome}" class="fotos">
+                  <img src="${imagemSrc}" alt="Foto da peça ${p.nome} da Flower's Store" class="fotos" loading="lazy">
                   <h3>${p.nome}</h3>
-                  <p class="preco">${precoFmt}</p>
-                  <button type="button" onclick="window.open('https://wa.me/553496705000?text=${msgWhats}', '_blank')">Comprar Agora</button>
+                  ${precoHtml}
+                  <button type="button" aria-label="${ariaComprar}" onclick="window.open('https://wa.me/553496682810?text=${msgWhats}', '_blank', 'noopener,noreferrer')">Comprar Agora</button>
               </article>
             `;
           }).join('');
 
         } catch (err) {
           console.error('Erro de conexão:', err);
-          container.innerHTML = '<p style="text-align:center; color:red;">Erro ao carregar promoções.</p>';
+          container.innerHTML = '<p style="text-align:center; color:red;" role="alert">Erro ao carregar promoções.</p>';
         }
       }
 
