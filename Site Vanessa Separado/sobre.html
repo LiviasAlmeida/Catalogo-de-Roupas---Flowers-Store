@@ -2,7 +2,8 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="shortcut icon" href="imagens/Icons/logo-flowers-store.jpg" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -19,6 +20,9 @@
   </head>
 
   <body>
+    <!-- Atalho de acessibilidade para navegação via teclado (WCAG 2.4.1) -->
+    <a href="#conteudo-sobre" class="sr-only-focusable">Pular para o conteúdo sobre a loja</a>
+
     <!-- CABEÇALHO -->
     <div class="top-announcement-bar">
       <p>
@@ -27,45 +31,47 @@
       </p>
     </div>
 
-    <header>
+    <header role="banner">
       <div class="logo-container">
         <img
           class="logo logo-circular"
           src="imagens/Icons/logo-flowers-store.jpg"
-          alt="Logo Flower's Store Esquerda"
+          alt=""
+          aria-hidden="true"
         />
-        <h1 class="titulo-loja">Flower's Store</h1>
+        <span class="titulo-loja" role="heading" aria-level="1">Flower's Store</span>
         <img
           class="logo logo-circular"
           src="imagens/Icons/logo-flowers-store.jpg"
-          alt="Logo Flower's Store Direita"
+          alt=""
+          aria-hidden="true"
         />
       </div>
     </header>
 
     <!-- NAVEGAÇÃO GLOBAL -->
-    <nav class="navegacao-principal">
+    <nav class="navegacao-principal" aria-label="Navegação principal da loja">
       <a href="promocao.html">Promoções da Semana</a>
       <a href="produtos.html">Produtos</a>
-      <a href="sobre.html" class="active">Sobre</a>
+      <a href="sobre.html" class="active" aria-current="page">Sobre</a>
       <a href="contato.html">Contato</a>
     </nav>
 
     <!-- CONTEÚDO EXCLUSIVO DE SOBRE -->
-    <main class="pagina-sobre">
+    <main class="pagina-sobre" id="conteudo-sobre" tabindex="-1">
       <!-- Seção da História com o Modelo do Lázaro -->
-      <section class="about-section">
+      <section class="about-section" aria-labelledby="titulo-historia">
         <div class="about-wrapper">
-          <div class="about-image-side">
+          <div class="about-image-side" role="img" aria-label="Fotografia de Vanessa Amaral e Luiza, fundadoras da Flower's Store">
             <div class="image-overlay">
-              <h2>Vanessa & Luiza</h2>
+              <p style="font-weight: 700; font-size: 1.8rem; margin: 0; color: #ffffff;">Vanessa & Luiza</p>
               <p>Fundadoras da Flower's Store</p>
             </div>
           </div>
 
           <div class="about-content-side">
             <span class="badge">Propósito & Essência</span>
-            <h2>Moda, Elegância e Autenticidade</h2>
+            <h2 id="titulo-historia">Moda, Elegância e Autenticidade</h2>
 
             <p>
               A <strong>Flower's Store</strong> nasceu da união entre a paixão pela moda e o sonho de Vanessa Amaral e sua filha, Luiza, de criar uma marca que representasse a beleza e a autenticidade feminina.
@@ -83,7 +89,7 @@
       </section>
 
       <!-- Seção de Missão, Visão e Valores -->
-      <section class="secao-mvv">
+      <section class="secao-mvv" aria-label="Missão, Visão e Valores da Flower's Store">
         <article class="missao card-mvv">
           <h3>Missão</h3>
           <p>Oferecer peças de alta qualidade que valorizem a identidade e a autoestima de nossos clientes.</p>
@@ -91,7 +97,7 @@
 
         <article class="visao card-mvv">
           <h3>Visão</h3>
-          <p>Ser referência nacional no segmento de moda casual e elegante até 2030.</p>
+          <p>Ser referência nacional no segmento de moda casual e elegante.</p>
         </article>
 
         <article class="valores card-mvv">
@@ -102,18 +108,16 @@
     </main>
 
     <!-- RODAPÉ GLOBAL -->
-    <footer class="rodape">
-    <img class="logo-circular" src="imagens/Icons/logo-flowers-store.jpg" alt="Logo Flower's Store"/>
-    <h1 class="titulo-loja-baixo">Flower's Store</h1>
-    <br>
-    <p center>Elegância, bom gosto e peças exclusivas feitas para realçar a<br>
-       beleza e a autoestima feminina.</p>
-       <br>
-    <p>&copy;2026 Flowers Store. Todos os direitos reservados. · Rua Getúlio Guarita, 543 - Abadia, Uberaba - MG
-      <a href="admin.html" style="color: inherit; text-decoration: none; opacity: 0.7; font-size: 0.8rem;" title="Acesso do Lojista">
-        <i class="bi bi-shield-lock"></i> Painel
-      </a>
-    </p>
-  </footer>
+    <footer class="rodape" role="contentinfo">
+      <img class="logo-circular" src="imagens/Icons/logo-flowers-store.jpg" alt="" aria-hidden="true"/>
+      <p class="titulo-loja-baixo" aria-hidden="true">Flower's Store</p>
+      <br>
+      <p>Elegância, bom gosto e peças exclusivas feitas para realçar a<br>
+         beleza e a autoestima feminina.</p>
+      <br>
+      <p>CNPJ: 43.322.911/0001-48</p>
+      <p>Rua Getúlio Guaritá, 543 - Abadia, Uberaba - MG</p>
+      <p>&copy;2026 Flower's Store. Todos os direitos reservados.</p>
+    </footer>
   </body>
 </html>
